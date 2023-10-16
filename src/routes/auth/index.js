@@ -13,14 +13,32 @@ const Login = ({user}) => {
 
       <div class={style.inputContainer}>
         <div class={style.formInput}>
-          <label for="email">Email</label>
-          <input id="email" type="text" />
+          <div>
+            <label for="email">Email: </label>
+          </div>
+          <div>
+            <input id="email" type="text" />
+          </div>
         </div>
         <div class={style.formInput}>
-          <label for="password">Password</label>
-          <input id="password" type="password" />
+          <div>
+            <label for="password">Password: </label>
+          </div>
+          <div>
+            <input id="password" type="password" />
+          </div>
         </div>
-        <div class={style.formInput}>
+        {!loginRegister && (
+          <div class={style.formInput}>
+            <div>
+              <label for="confirmPassword">Confirm Password: </label>
+            </div>
+            <div>
+              <input id="confirmPassword" type="password" />
+            </div>
+          </div>
+        )}
+        <div class={style.formButton}>
           <button>Save</button>
         </div>
       </div>
@@ -28,7 +46,7 @@ const Login = ({user}) => {
         <p>
           Already have an account?{'  '}
           <button onClick={() => setLoginRegister(!loginRegister)}>
-            {loginRegister ? 'register' : 'login'}
+            {loginRegister ? 'Register' : 'Login'}
           </button>
         </p>
       </div>

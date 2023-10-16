@@ -10,7 +10,7 @@
 
 .inputContainer {
   border-bottom: 1px solid #333;
-  height: 108px;
+  height: 125px;
   display: flex;
   flex-direction: column;
   justify-content: space-around;
@@ -19,4 +19,9 @@
 .formInput {
   display: flex;
   justify-content: space-between;
+}
+
+.formButton {
+  display: flex;
+  justify-content: flex-end;
 }
