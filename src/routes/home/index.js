@@ -1,6 +1,7 @@
 import {h} from 'preact';
 import {useState, useEffect} from 'preact/hooks';
 import style from './style.css';
+import {Link} from 'preact-router/match';
 
 import BACGraph from '../../components/BACGraph';
 import DrinkList from '../../components/DrinkList';
@@ -156,9 +157,11 @@ const Home = () => {
         <button onClick={handleAddDrink} class={style.button}>
           Add Drink
         </button>
-        <button onClick={handleAddDrink} class={style.button}>
-          Change Drink
-        </button>
+        <Link activeClassName={style.active} href="/change-drink">
+          <button onClick={handleAddDrink} class={style.button}>
+            Change Drink
+          </button>
+        </Link>
       </div>
     </div>
   );

@@ -23,7 +23,7 @@ function BACGraph({bacForecast, currentBacIndex, drinks}) {
           {x: xAxisLabels[currentBacIndex], y: bacForecast[currentBacIndex]},
         ],
         fill: false,
-        borderColor: 'rgba(75, 192, 192, 1)',
+        borderColor: '#00FF00',
         tension: 0.1,
         label: 'BAC (%)',
         pointBackgroundColor: bacForecast.map((_, index) =>
@@ -36,7 +36,22 @@ function BACGraph({bacForecast, currentBacIndex, drinks}) {
     ],
   };
 
-  return <Line data={data} />;
+  const options = {
+    scales: {
+      x: {
+        grid: {
+          color: 'rgba(51, 51, 51)',
+        },
+      },
+      y: {
+        grid: {
+          color: 'rgba(51, 51, 51)',
+        },
+      },
+    },
+  };
+
+  return <Line data={data} options={options} />;
 }
 
 export default BACGraph;

@@ -1,0 +1,22 @@
+.form {
+  background-color: #000;
+  border-radius: 5px;
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  color: #fff;
+}
+
+.inputContainer {
+  border-bottom: 1px solid #333;
+  height: 108px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.formInput {
+  display: flex;
+  justify-content: space-between;
+}
