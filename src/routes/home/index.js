@@ -7,43 +7,7 @@ import BACGraph from '../../components/BACGraph';
 import DrinkList from '../../components/DrinkList';
 
 const Home = () => {
-  const [drinks, setDrinks] = useState([
-    {
-      name: 'Wine',
-      time: 1697330812924,
-      alcoholUnits: 1,
-    },
-    {
-      name: 'Wine',
-      time: 1697330812924,
-      alcoholUnits: 1,
-    },
-    {
-      name: 'Beer',
-      time: 1697330812924 - 0.5 * 60 * 60 * 1000,
-      alcoholUnits: 1,
-    },
-    // {
-    //   name: 'Beer',
-    //   time: 1697328051572 - 1.5 * 60 * 60 * 1000,
-    //   alcoholUnits: 1.4,
-    // },
-    // {
-    //   name: 'Wine',
-    //   time: 1697328051572 - 2 * 60 * 60 * 1000,
-    //   alcoholUnits: 2,
-    // },
-    // {
-    //   name: 'Beer',
-    //   time: 1697328051572 - 3 * 60 * 60 * 1000,
-    //   alcoholUnits: 1.6,
-    // },
-    // {
-    //   name: 'Whiskey',
-    //   time: 1697328051572 - 8 * 60 * 60 * 1000,
-    //   alcoholUnits: 2,
-    // },
-  ]);
+  const [drinks, setDrinks] = useState([]);
 
   const [currentBacIndex, setCurrentBacIndex] = useState(0);
   const [bacForecast, setBacForecast] = useState([]);
@@ -84,6 +48,17 @@ const Home = () => {
         return updatedDrinks;
       });
     }
+  }
+
+  function handleRemoveLastDrink() {
+    setDrinks((prevDrinks) => {
+      const updatedDrinks = prevDrinks.slice(0, -1); // Remove the last element of the array
+      const forecast = generateBacForecast(updatedDrinks);
+
+      setBacForecast(forecast);
+
+      return updatedDrinks;
+    });
   }
 
   function generateBacForecast(drinks) {
@@ -135,13 +110,14 @@ const Home = () => {
 
   return (
     <div class={style.home}>
+      <h2 style="color: grey">⬇ Buy a drink. Add it below. Watch your BAC.</h2>
       <div class={style.main}>
         <div class={style.sections}>
           <h2>
             {isNaN(Number(bacForecast[currentBacIndex]))
               ? 0
               : Number(bacForecast[currentBacIndex]).toFixed(4)}
-            % BAC
+            % Current BAC
           </h2>
           <DrinkList drinks={drinks} />
         </div>
@@ -155,11 +131,14 @@ const Home = () => {
       </div>
       <div class={style.buttonContainer}>
         <button onClick={handleAddDrink} class={style.button}>
-          Add Drink
+          + Add Drink
+        </button>
+        <button onClick={handleRemoveLastDrink} class={style.button}>
+          🗑️ Remove Drink
         </button>
         <Link activeClassName={style.active} href="/change-drink">
           <button onClick={handleAddDrink} class={style.button}>
-            Change Drink
+            🍺 Change Drink
           </button>
         </Link>
       </div>

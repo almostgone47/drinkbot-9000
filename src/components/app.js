@@ -19,7 +19,7 @@ const App = () => (
       </Router>
     </main>
     <footer style="color: #fff; background:#000;padding:1px 8px;">
-      &copy; 2023 Drinkbot-9000
+      &copy; 2023 DrinkingBuddy-9000
     </footer>
   </div>
 );

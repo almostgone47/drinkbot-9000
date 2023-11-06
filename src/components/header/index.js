@@ -11,7 +11,7 @@ const Header = () => (
         height="32"
         width="32"
       />
-      <h1>Drinkbot-9000</h1>
+      <h1>DrinkingBuddy-9000</h1>
     </a>
     <nav>
       <Link activeClassName={style.active} href="/auth">

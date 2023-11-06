@@ -51,7 +51,7 @@ function BACGraph({bacForecast, currentBacIndex, drinks}) {
     },
   };
 
-  return <Line data={data} options={options} />;
+  return <Line key={drinks.length} data={data} options={options} />;
 }
 
 export default BACGraph;
