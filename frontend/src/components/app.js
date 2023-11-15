@@ -1,8 +1,8 @@
 import {h} from 'preact';
 import {Router} from 'preact-router';
+import {Toaster} from 'react-hot-toast';
 
 import Header from './header';
-
 // Code-splitting is automated for `routes` directory
 import Home from '../routes/home';
 import ChangeDrink from '../routes/changeDrink';
@@ -11,6 +11,7 @@ import Auth from '../routes/auth';
 const App = () => (
   <div id="app">
     <Header />
+    <Toaster position="top-center" />
     <main>
       <Router>
         <Home path="/" />

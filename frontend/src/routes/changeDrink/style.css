@@ -1,0 +1,57 @@
+.selectorContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.selectorHead {
+  text-align: center;
+}
+
+.drinkSelector {
+  display: flex;
+  flex-direction: row;
+}
+
+.form {
+  background-color: #000;
+  border-radius: 5px;
+  padding: 30px;
+  margin-right: 30px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 120px;
+  color: #fff;
+}
+
+.formInput {
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.savedDrinks {
+  background: black;
+  padding: 20px 5px;
+  height: 140px;
+  overflow: auto;
+}
+
+.savedDrinks ul {
+  padding-left: 0px;
+}
+
+.savedDrinks li {
+  padding: 10px 50px;
+  list-style: none;
+}
+
+.savedDrinks li:hover {
+  background: #00ff00;
+  color: black;
+  cursor: pointer;
+}

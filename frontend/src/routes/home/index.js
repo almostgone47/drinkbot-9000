@@ -19,14 +19,14 @@ const Home = () => {
     const updateBacIndex = () => {
       setCurrentBacIndex((prevIndex) => {
         if (prevIndex + 1 < bacForecast.length) {
-          return prevIndex + 1; // Move to the next BAC value
+          return prevIndex + 1;
         }
-        clearInterval(interval); // If we've reached the end, clear the interval
-        return prevIndex; // Return the current index
+        clearInterval(interval);
+        return prevIndex;
       });
     };
 
-    const interval = setInterval(updateBacIndex, 5000); // Update every 5 seconds
+    const interval = setInterval(updateBacIndex, 5000);
 
     return () => clearInterval(interval);
   }, [bacForecast]);
@@ -52,7 +52,7 @@ const Home = () => {
 
   function handleRemoveLastDrink() {
     setDrinks((prevDrinks) => {
-      const updatedDrinks = prevDrinks.slice(0, -1); // Remove the last element of the array
+      const updatedDrinks = prevDrinks.slice(0, -1);
       const forecast = generateBacForecast(updatedDrinks);
 
       setBacForecast(forecast);
@@ -65,11 +65,9 @@ const Home = () => {
     let currentBac = calculateStartingBac(drinks);
     const forecastedBacValues = [currentBac];
 
-    // Reduce BAC until it reaches zero
     while (currentBac > 0.001) {
-      // Using 0.001 as a small threshold to avoid infinite loops
-      const decrease = METABOLIZATION_RATE_PER_MINUTE * 5; // Metabolization over 5 minutes
-      currentBac = Math.max(currentBac - decrease, 0); // Don't go below 0
+      const decrease = METABOLIZATION_RATE_PER_MINUTE * 5;
+      currentBac = Math.max(currentBac - decrease, 0);
       forecastedBacValues.push(currentBac);
     }
 
@@ -77,26 +75,22 @@ const Home = () => {
   }
 
   /// *** MOVE CONSTANTS TO A CONSTANTS FILE AND EXPORT *** ///
-  const METABOLIZATION_RATE_PER_MINUTE = 0.015 / 60; // Example value
-  const BAC_INCREASE_PER_UNIT = 0.02; // BAC increase by 0.02% per unit of alcohol
+  const METABOLIZATION_RATE_PER_MINUTE = 0.015 / 60;
+  const BAC_INCREASE_PER_UNIT = 0.02;
 
   function calculateStartingBac(drinks) {
-    // Determine the current time
     const currentTime = Date.now();
 
     let totalBac = 0;
 
     drinks.forEach((drink) => {
-      // Calculate initial BAC for this drink
       const initialBacFromThisDrink =
         drink.alcoholUnits * BAC_INCREASE_PER_UNIT;
 
-      // Calculate how much BAC has been metabolized since this drink was consumed
       const timeSinceDrinkInMinutes = (currentTime - drink.time) / (1000 * 60);
       const bacDecreaseFromThisDrink =
         METABOLIZATION_RATE_PER_MINUTE * timeSinceDrinkInMinutes;
 
-      // Adjust the initial BAC for this drink by subtracting the metabolized amount
       const adjustedBacForThisDrink = Math.max(
         initialBacFromThisDrink - bacDecreaseFromThisDrink,
         0,
