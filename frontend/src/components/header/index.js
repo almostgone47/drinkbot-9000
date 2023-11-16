@@ -1,17 +1,15 @@
 import {h} from 'preact';
 import {Link} from 'preact-router/match';
-import {jwtDecode} from 'jwt-decode';
 import style from './style.css';
 import {useEffect, useState} from 'preact/hooks';
+import setAuthToken from '../../../utils/setAuthToken';
 
 const Header = () => {
   const [loggedIn, setLoggedIn] = useState(false);
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    const jwt = jwtDecode(token);
-    const now = Math.floor(Date.now() / 1000); // Current time in Unix timestamp
+    const tokenValid = setAuthToken;
 
-    if (!jwt || now >= jwt.exp) {
+    if (tokenValid) {
       logout();
     } else {
       setLoggedIn(true);
@@ -21,6 +19,7 @@ const Header = () => {
   const logout = () => {
     setLoggedIn(false);
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
   };
 
   return (

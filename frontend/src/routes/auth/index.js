@@ -30,9 +30,10 @@ const Login = () => {
         password: userData.password,
       })
       .then((res) => {
-        const {jwtToken} = res.data;
-        setAuthToken(jwtToken);
+        const {jwtToken, user} = res.data;
         localStorage.setItem('token', jwtToken);
+        localStorage.setItem('user', JSON.stringify(user));
+        setAuthToken();
         toast.success('Success!');
         route('/', true);
       })
@@ -54,8 +55,9 @@ const Login = () => {
         password: userData.password,
       })
       .then((res) => {
-        const {jwtToken} = res.data;
+        const {jwtToken, user} = res.data;
         localStorage.setItem('token', jwtToken);
+        localStorage.setItem('user', JSON.stringify(user));
         setAuthToken(jwtToken);
         toast.success('Success!');
         route('/', true);

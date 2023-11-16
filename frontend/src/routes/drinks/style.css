@@ -48,6 +48,8 @@
 .savedDrinks li {
   padding: 10px 50px;
   list-style: none;
+  display: flex;
+  justify-content: space-between;
 }
 
 .savedDrinks li:hover {

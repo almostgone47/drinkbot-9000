@@ -12,8 +12,9 @@ const createDrink = async (drink, user) => {
   const newDrink = new Drink({
     drinkName: drink.drinkName,
     drinkUnits: drink.drinkUnits,
-    user: user.id,
+    user: user._id,
   });
+  console.log('createDrink: ', newDrink);
   return newDrink.save();
 };
 

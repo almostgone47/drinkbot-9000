@@ -5,7 +5,7 @@ import {Toaster} from 'react-hot-toast';
 import Header from './header';
 // Code-splitting is automated for `routes` directory
 import Home from '../routes/home';
-import ChangeDrink from '../routes/changeDrink';
+import Drinks from '../routes/drinks';
 import Auth from '../routes/auth';
 
 const App = () => (
@@ -15,7 +15,7 @@ const App = () => (
     <main>
       <Router>
         <Home path="/" />
-        <ChangeDrink path="/change-drink/" user="me" />
+        <Drinks path="/change-drink/" user="me" />
         <Auth path="/auth" />
       </Router>
     </main>

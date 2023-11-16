@@ -1,5 +1,5 @@
 import {h} from 'preact';
-import {useState} from 'preact/hooks';
+import {useEffect, useState} from 'preact/hooks';
 import axios from 'axios';
 import {Link} from 'preact-router/match';
 import toast from 'react-hot-toast';
@@ -7,12 +7,8 @@ import toast from 'react-hot-toast';
 import style from './style.css';
 
 // Note: `user` comes from the URL, courtesy of our router
-const ChangeDrink = () => {
-  const [savedDrinks, setSavedDrinks] = useState([
-    {drinkName: 'Wine', drinkUnits: '1.4'},
-    {drinkName: 'Gin and Tonic', drinkUnits: '1.4'},
-    {drinkName: 'Vodka Cran', drinkUnits: '1.4'},
-  ]);
+const Drinks = () => {
+  const [savedDrinks, setSavedDrinks] = useState([]);
   const [selectedDrink, setSelectedDrink] = useState({
     drinkName: 'Beer',
     drinkUnits: '1',
@@ -22,6 +18,11 @@ const ChangeDrink = () => {
     drinkUnits: '',
   });
 
+  useEffect(() => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    setSavedDrinks(user.userDrinks);
+  }, []);
+
   const changeHandler = (e) => {
     setDrinkData({
       ...drinkData,
@@ -29,17 +30,38 @@ const ChangeDrink = () => {
     });
   };
 
-  const saveDrink = (drink) => {
-    console.log('drinkData: ', axios.defaults.headers);
+  const saveDrink = () => {
     axios
-      .post('/api/drinks/add', {drinkData})
-      .then(() => {
-        toast.success('Success!');
+      .post('/api/drinks/', {drinkData})
+      .then((res) => {
+        adjustUsersDrinks([...savedDrinks, res.data]);
+        toast.success('Success! Drink Added!');
       })
       .catch((err) => {
-        toast.error('Unable to Authenticate. ' + err.msg);
+        toast.error('Unable to save drink. ');
         console.log('auth err: ', err);
       });
+  };
+
+  const removeDrink = (id) => {
+    axios
+      .delete(`/api/drinks/${id}`)
+      .then(() => {
+        const newArr = savedDrinks.filter((drink) => drink._id !== id);
+        adjustUsersDrinks(newArr);
+        toast.success('Success! Drink Removed!');
+      })
+      .catch((err) => {
+        toast.error('Unable to remove drink. ');
+        console.log('Remove Drink Error: ', err);
+      });
+  };
+
+  const adjustUsersDrinks = (drinksArr) => {
+    const user = JSON.parse(localStorage.getItem('user'));
+    user.userDrinks = drinksArr;
+    localStorage.setItem('user', JSON.stringify(user));
+    setSavedDrinks(drinksArr);
   };
 
   return (
@@ -83,7 +105,8 @@ const ChangeDrink = () => {
           <ul>
             {savedDrinks.map((drink, index) => (
               <li key={index} onClick={() => setSelectedDrink(drink)}>
-                {drink.drinkName}: {drink.drinkUnits} Standard Units
+                {drink.drinkName}: {drink.drinkUnits} Standard Units{' '}
+                <span onClick={() => removeDrink(drink._id)}>🗑️</span>
               </li>
             ))}
           </ul>
@@ -93,4 +116,4 @@ const ChangeDrink = () => {
   );
 };
 
-export default ChangeDrink;
+export default Drinks;
