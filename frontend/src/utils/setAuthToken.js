@@ -3,11 +3,16 @@ import {jwtDecode} from 'jwt-decode';
 
 const setAuthToken = () => {
   const token = localStorage.getItem('token');
-  const jwt = jwtDecode(token);
-  const now = Math.floor(Date.now() / 1000); // Current time in Unix timestamp
+  let jwt = '';
+  if (token) {
+    jwt = jwtDecode(token);
+  }
 
-  if (!jwt || now >= jwt.exp) {
+  const now = Math.floor(Date.now() / 1000);
+
+  if (!token || now >= jwt.exp) {
     delete axios.defaults.headers.common['Authorization'];
+    localStorage.removeItem('token');
     return false;
   }
 

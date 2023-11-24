@@ -5,11 +5,13 @@ import {format} from 'date-fns';
 import {Line} from 'react-chartjs-2';
 
 function BACGraph({bacForecast, currentBacIndex, drinks}) {
-  const xAxisLabels = Array.from({length: bacForecast.length}, (_, i) => {
-    // USE FIRST DRINK THAT INCREASES BAC NOT THE FIRST DRINK, IT COULD ALREADY BE METABOLIZED
-    const date = new Date(drinks[0].time + i * 5 * 60 * 1000); // i * 5 minutes
-    return format(new Date(date), 'h:mm a');
-  });
+  const xAxisLabels = drinks.length
+    ? Array.from({length: bacForecast.length}, (_, i) => {
+        // USE FIRST DRINK THAT INCREASES BAC NOT THE FIRST DRINK, IT COULD ALREADY BE METABOLIZED
+        const date = new Date(drinks[0].time + i * 5 * 60 * 1000); // i * 5 minutes
+        return format(new Date(date), 'h:mm a');
+      })
+    : '';
 
   const data = {
     labels: xAxisLabels,

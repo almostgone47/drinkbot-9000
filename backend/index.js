@@ -7,9 +7,9 @@ const path = require('path');
 const cors = require('cors');
 const app = express();
 
-// routes
 const users = require('./routes/users');
 const drinks = require('./routes/drinks');
+const advertisements = require('./routes/advertisements');
 
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
@@ -22,7 +22,7 @@ mongoose
   .catch((err) => console.log(err));
 
 const corsOptions = {
-  origin: '*', // or '*' for all origins
+  origin: '*',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: ['Content-Type', 'Authorization'],
 };
@@ -32,6 +32,7 @@ require('./config/passport')(passport);
 
 app.use('/api/users', users);
 app.use('/api/drinks', drinks);
+app.use('/api/advertisements', advertisements);
 
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, '/client/build')));

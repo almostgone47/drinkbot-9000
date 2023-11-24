@@ -4,11 +4,11 @@ import toast from 'react-hot-toast';
 import axios from 'axios';
 import {route} from 'preact-router';
 
-import setAuthToken from '../../../utils/setAuthToken';
+import setAuthToken from '../../utils/setAuthToken';
 import style from './style.css';
 
 // Note: `user` comes from the URL, courtesy of our router
-const Login = () => {
+const Login = ({setLoginStatus}) => {
   const [loginRegister, setLoginRegister] = useState(true);
   const [userData, setUserData] = useState({
     email: '',
@@ -23,54 +23,51 @@ const Login = () => {
     });
   };
 
-  const login = () => {
+  const fetchLogin = () => {
     axios
       .post('/api/users/login', {
         email: userData.email,
         password: userData.password,
       })
       .then((res) => {
-        const {jwtToken, user} = res.data;
-        localStorage.setItem('token', jwtToken);
-        localStorage.setItem('user', JSON.stringify(user));
-        setAuthToken();
-        toast.success('Success!');
-        route('/', true);
+        setStorage(res);
       })
       .catch((err) => {
         toast.error('Unable to Authenticate. ' + err.msg);
         console.log('auth err: ', err);
       });
-    setUserData({
-      email: '',
-      password: '',
-      confirmPassword: '',
-    });
   };
 
-  const register = () => {
+  const fetchRegister = () => {
     axios
       .post('/api/users/register', {
         email: userData.email,
         password: userData.password,
       })
       .then((res) => {
-        const {jwtToken, user} = res.data;
-        localStorage.setItem('token', jwtToken);
-        localStorage.setItem('user', JSON.stringify(user));
-        setAuthToken(jwtToken);
-        toast.success('Success!');
-        route('/', true);
+        setStorage(res);
       })
       .catch((err) => {
         toast.error('Unable to Authenticate. ' + err.msg);
         console.log('auth err: ', err);
       });
-    setUserData({
-      email: '',
-      password: '',
-      confirmPassword: '',
-    });
+  };
+
+  const setStorage = (res) => {
+    const {jwtToken, user} = res.data;
+    setLoginStatus(true);
+    localStorage.setItem('token', jwtToken);
+    localStorage.setItem('user', JSON.stringify(user));
+    setAuthToken(jwtToken);
+    toast.success('Success!');
+    setUserData(
+      () => ({
+        email: '',
+        password: '',
+        confirmPassword: '',
+      }),
+      route('/', true),
+    );
   };
 
   return (
@@ -124,9 +121,9 @@ const Login = () => {
         )}
         <div class={style.formButton}>
           {loginRegister ? (
-            <button onClick={login}>Login</button>
+            <button onClick={fetchLogin}>Login</button>
           ) : (
-            <button onClick={register}>Register</button>
+            <button onClick={fetchRegister}>Register</button>
           )}
         </div>
       </div>

@@ -8,8 +8,12 @@
   justify-content: space-around;
 }
 
-.sections {
-  width: 50%;
+.leftSection {
+  width: 45%;
+}
+
+.rightSection {
+  width: 52%;
 }
 
 .buttonContainer {

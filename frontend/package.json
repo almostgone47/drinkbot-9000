@@ -29,6 +29,8 @@
     "sirv-cli": "^2.0.2"
   },
   "dependencies": {
+    "@babel/plugin-syntax-class-properties": "^7.12.13",
+    "@babel/plugin-transform-react-jsx-source": "^7.23.3",
     "axios": "^1.6.2",
     "chart.js": "^4.4.0",
     "chartjs-adapter-date-fns": "^3.0.0",
@@ -48,5 +50,8 @@
       "<rootDir>/tests/__mocks__/browserMocks.js",
       "<rootDir>/tests/__mocks__/setupTests.js"
     ]
-  }
+  },
+  "plugins": [
+    "@babel/plugin-syntax-class-properties"
+  ]
 }

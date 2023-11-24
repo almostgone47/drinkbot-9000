@@ -6,14 +6,22 @@ import {Link} from 'preact-router/match';
 import BACGraph from '../../components/BACGraph';
 import DrinkList from '../../components/DrinkList';
 
-const Home = () => {
-  const [drinks, setDrinks] = useState([]);
+const Home = ({loginStatus}) => {
+  const [drinks, setDrinks] = useState(() => {
+    return JSON.parse(localStorage.getItem('drinks')) || [];
+  });
+  const [currentBacIndex, setCurrentBacIndex] = useState(() => {
+    return JSON.parse(localStorage.getItem('currentBacIndex')) || 0;
+  });
+  const [bacForecast, setBacForecast] = useState(() => {
+    return JSON.parse(localStorage.getItem('bacForecast')) || [];
+  });
 
-  const [currentBacIndex, setCurrentBacIndex] = useState(0);
-  const [bacForecast, setBacForecast] = useState([]);
-  // write a function that will calculate correct the starting bac from lists with varied times
-  // write a function that will divide the current bac into matabolized parts until it reaches zero and add to an array
-  // create a function with an interval that will remove an item from the array the data too the graph
+  useEffect(() => {
+    localStorage.setItem('drinks', JSON.stringify(drinks));
+    localStorage.setItem('currentBacIndex', JSON.stringify(currentBacIndex));
+    localStorage.setItem('bacForecast', JSON.stringify(bacForecast));
+  }, [drinks, currentBacIndex, bacForecast]);
 
   useEffect(() => {
     const updateBacIndex = () => {
@@ -51,14 +59,20 @@ const Home = () => {
   }
 
   function handleRemoveLastDrink() {
-    setDrinks((prevDrinks) => {
-      const updatedDrinks = prevDrinks.slice(0, -1);
-      const forecast = generateBacForecast(updatedDrinks);
+    if (drinks.length) {
+      setDrinks((prevDrinks) => {
+        const updatedDrinks = prevDrinks.slice(0, -1);
+        const forecast = generateBacForecast(updatedDrinks);
 
-      setBacForecast(forecast);
+        setBacForecast(forecast);
 
-      return updatedDrinks;
-    });
+        return updatedDrinks;
+      });
+    } else {
+      setDrinks([]);
+      setBacForecast([]);
+      setCurrentBacIndex(0);
+    }
   }
 
   function generateBacForecast(drinks) {
@@ -106,7 +120,7 @@ const Home = () => {
     <div class={style.home}>
       <h2 style="color: grey">⬇ Buy a drink. Add it below. Watch your BAC.</h2>
       <div class={style.main}>
-        <div class={style.sections}>
+        <div class={style.leftSection}>
           <h2>
             {isNaN(Number(bacForecast[currentBacIndex]))
               ? 0
@@ -115,7 +129,7 @@ const Home = () => {
           </h2>
           <DrinkList drinks={drinks} />
         </div>
-        <div class={style.sections}>
+        <div class={style.rightSection}>
           <BACGraph
             bacForecast={bacForecast}
             currentBacIndex={currentBacIndex}
@@ -130,7 +144,10 @@ const Home = () => {
         <button onClick={handleRemoveLastDrink} class={style.button}>
           🗑️ Remove Drink
         </button>
-        <Link activeClassName={style.active} href="/change-drink">
+        <Link
+          activeClassName={style.active}
+          href={loginStatus ? '/change-drink' : '/auth'}
+        >
           <button onClick={handleAddDrink} class={style.button}>
             🍺 Change Drink
           </button>

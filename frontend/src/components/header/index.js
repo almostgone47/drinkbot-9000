@@ -1,27 +1,8 @@
 import {h} from 'preact';
 import {Link} from 'preact-router/match';
 import style from './style.css';
-import {useEffect, useState} from 'preact/hooks';
-import setAuthToken from '../../../utils/setAuthToken';
 
-const Header = () => {
-  const [loggedIn, setLoggedIn] = useState(false);
-  useEffect(() => {
-    const tokenValid = setAuthToken;
-
-    if (tokenValid) {
-      logout();
-    } else {
-      setLoggedIn(true);
-    }
-  }, []);
-
-  const logout = () => {
-    setLoggedIn(false);
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-  };
-
+const Header = ({loginStatus, logoutHandler}) => {
   return (
     <header class={style.header}>
       <a href="/" class={style.logo}>
@@ -33,9 +14,10 @@ const Header = () => {
         />
         <h1>DrinkingBuddy-9000</h1>
       </a>
+      {console.log('loggedIn: ', loginStatus)}
       <nav>
-        {loggedIn ? (
-          <Link activeClassName={style.active} href="/" onClick={logout}>
+        {loginStatus ? (
+          <Link activeClassName={style.active} href="/" onClick={logoutHandler}>
             Logout
           </Link>
         ) : (
