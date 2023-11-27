@@ -10,6 +10,7 @@ const Advertisement = () => {
     textBody: '',
     backlink: '',
   });
+
   useEffect(() => {
     const fetchData = async () => {
       try {
